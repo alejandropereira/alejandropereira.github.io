@@ -1,4 +1,68 @@
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0"><channel><title>Alejandro Pereira</title><description>Thoughts, stories and ideas.</description><link>http://localhost:2368/</link><generator>Ghost 0.6</generator><lastBuildDate>Fri, 04 Sep 2015 03:01:03 GMT</lastBuildDate><atom:link href="http://localhost:2368/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Movimientos Básicos en VIM</title><description>&lt;p&gt;En este video vas a aprender, como crear, guardar y salir de vim, tambien aprenderás a insertar texto, y moverte dentro de vim.&lt;/p&gt;
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0"><channel><title>Alejandro Pereira</title><description>Thoughts, stories and ideas.</description><link>http://localhost:2368/</link><generator>Ghost 0.6</generator><lastBuildDate>Fri, 04 Sep 2015 14:25:54 GMT</lastBuildDate><atom:link href="http://localhost:2368/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Usando Bower para manejar dependencias frontend en Rails</title><description>&lt;p&gt;Si no sabes que es Bower, es un poderoso gestor de componentes frontend creado por los tíos de Twitter. Pero te preguntaras ¿Para que usar Bower en Rails, si tenemos el &lt;code&gt;Gemfile&lt;/code&gt; para instalar gemas.&lt;/p&gt;
+
+&lt;p&gt;Bower nos hace la vida mucho mas sencilla a la hora de manejar dependencias frontend,&lt;/p&gt;</description><link>http://localhost:2368/usando-bower-para-manejar-dependencias-frontend-en-rails/</link><guid isPermaLink="false">726bb058-05c4-4260-a9b2-bc9fca218a0f</guid><dc:creator>Alejandro Pereira</dc:creator><pubDate>Wed, 15 Jul 2015 04:04:00 GMT</pubDate><content:encoded>&lt;p&gt;Si no sabes que es Bower, es un poderoso gestor de componentes frontend creado por los tíos de Twitter. Pero te preguntaras ¿Para que usar Bower en Rails, si tenemos el &lt;code&gt;Gemfile&lt;/code&gt; para instalar gemas.&lt;/p&gt;
+
+&lt;p&gt;Bower nos hace la vida mucho mas sencilla a la hora de manejar dependencias frontend, y aquí te dejo algunas razones.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Nos ahorra tiempo, el tener que ir al sitio oficial a conseguir una copia de Jquery, Angular, etc...&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ya no mas esperas, a que la versión en gema de Angular, Jquery sea actualizada a la mas reciente, con Bower, solo usamos el comando &lt;code&gt;bower update jquery&lt;/code&gt; y listo.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;No necesitamos incluir nuestras dependencias frontend en el sistema de control de versiones, ya que nuestro &lt;code&gt;bower.json&lt;/code&gt; contiene toda la información de las dependencias que estamos utilizando en el proyecto, y bastara con utilizar el comando &lt;code&gt;bower install&lt;/code&gt; para obtenerlas.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Nos ayuda a trabajar offline, ya que contamos con una versión en nuestro computador.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Es super fácil buscar una dependencia entre mas de 10,000 componentes, podemos utilizar &lt;code&gt;bower search&lt;/code&gt; y listo.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="instalacindebower"&gt;Instalación de Bower&lt;/h3&gt;
+
+&lt;p&gt;Para instar Bower, necesitamos tener instalado Node y NPM. Puedes descargarlo &lt;a href="https://nodejs.org/"&gt;aquí&lt;/a&gt; ó instalarlo vía &lt;a href="http://brew.sh/"&gt;Homebrew&lt;/a&gt; si estas en Mac, &lt;code&gt;brew install node&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Cuando ya tengamos Node y NPM, podemos instalar Bower &lt;code&gt;npm install -g bower&lt;/code&gt; este comando instalara Bower de forma global, para poder utilizarlo en otros proyectos.&lt;/p&gt;
+
+&lt;h4 id="configurarbower"&gt;Configurar Bower&lt;/h4&gt;
+
+&lt;p&gt;Ahora procederemos a configurar Bower, por defecto instala todas las dependencias en la ruta del proyecto, lo que no iría bien con Rails, le vamos a indicar que instale todos los componentes en la carpeta &lt;code&gt;vendor/assets/components&lt;/code&gt;, para esto vamos a crear un archivo de configuración en la ruta de nuestro proyecto &lt;code&gt;.bowerrc&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;{
+  "directory": "vendor/assets/components"
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id="bowerjson"&gt;Bower.json&lt;/h4&gt;
+
+&lt;p&gt;Ahora vamos a iniciar nuestro proyecto con &lt;code&gt;bower init&lt;/code&gt;, nos realizara un par de preguntas, y finalizaremos con un archivo &lt;code&gt;bower.json&lt;/code&gt; que es el que contendrá la información de las dependencias. &lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-javascript"&gt;{
+  name: 'nombredelproyecto',
+  version: '0.0.1',
+  authors: [
+    'Alejandro Pereira &amp;lt;alejandro@email.com&amp;gt;'
+  ],
+  description: 'Rails y Bower',
+  license: 'MIT',
+  homepage: '',
+  ignore: [
+    '**/.*',
+    'node_modules',
+    'bower_components',
+    'test',
+    'tests'
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ahora ya podemos instalar un componente por ejemplo Angular, &lt;code&gt;bower install angular&lt;/code&gt; y así de sencillo tendremos Angular en nuestra aplicación.&lt;/p&gt;
+
+&lt;h3 id="configurandorails"&gt;Configurando Rails&lt;/h3&gt;
+
+&lt;p&gt;Ahora tendremos que agregar la carpeta &lt;code&gt;vendor/assets/components&lt;/code&gt; a nuestros assets en &lt;code&gt;config/application.rb&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;config.assets.paths &amp;lt;&amp;lt; Rails.root.join('vendor', 'assets', 'components')  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Y por ultimo agregar la libreria a nuestro &lt;code&gt;application.js&lt;/code&gt; que se encuentra en &lt;code&gt;app/assets/js&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;//= require angular/angular
+&lt;/code&gt;&lt;/pre&gt;</content:encoded></item><item><title>Movimientos Básicos en VIM</title><description>&lt;p&gt;En este video vas a aprender, como crear, guardar y salir de vim, tambien aprenderás a insertar texto, y moverte dentro de vim.&lt;/p&gt;
 
 &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLbQ1CHuwhSaHppuEYnqbCbD44-GgFMso7" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</description><link>http://localhost:2368/movimientos-basicos-en-vim/</link><guid isPermaLink="false">93cfd70d-8412-47af-a1a9-098449e5ce01</guid><dc:creator>Alejandro Pereira</dc:creator><pubDate>Thu, 09 Jul 2015 02:58:00 GMT</pubDate><content:encoded>&lt;p&gt;En este video vas a aprender, como crear, guardar y salir de vim, tambien aprenderás a insertar texto, y moverte dentro de vim.&lt;/p&gt;
 
