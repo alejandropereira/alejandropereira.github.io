@@ -9,6 +9,7 @@ $(function() {
     e.preventDefault();
     return menu.slideToggle(300);
   });
+  $(".posts").fitVids();
   return $(window).on('resize', function() {
     if ($(window).width() > 720) {
       return menu.show();
