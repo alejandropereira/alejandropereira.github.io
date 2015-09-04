@@ -1,0 +1,214 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Crear formulario de contacto en Rails 4</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/main.css?v=a84743a149">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prism.css?v=a84743a149">
+
+    <link rel="canonical" href="index.html">
+    
+    <meta property="og:site_name" content="Alejandro Pereira">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Crear formulario de contacto en Rails 4">
+    <meta property="og:description" content="En este tutorial te voy a enseñar como crear un formulario de contacto en rails, el cual no se guardara en la base de datos. Las gemas que utilizaremos para lograrlos son: mail_form simple_form Instalando las gemas Vamos...">
+    <meta property="og:url" content="http://localhost:2368/crear-formulario-de-contacto-en-rails-4/">
+    <meta property="article:published_time" content="2015-06-11T04:10:00.000Z">
+    <meta property="article:modified_time" content="2015-09-04T02:18:35.246Z">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Crear formulario de contacto en Rails 4">
+    <meta name="twitter:description" content="En este tutorial te voy a enseñar como crear un formulario de contacto en rails, el cual no se guardara en la base de datos. Las gemas que utilizaremos para lograrlos son: mail_form simple_form Instalando las gemas Vamos...">
+    <meta name="twitter:url" content="http://localhost:2368/crear-formulario-de-contacto-en-rails-4/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Alejandro Pereira",
+    "author": {
+        "@type": "Person",
+        "name": "Alejandro Pereira",
+        "image": "//www.gravatar.com/avatar/776b1f52c07a47c254d36b75c7fceedc?s=250&d=mm&r=x",
+        "url": "http://localhost:2368/author/alejandro",
+        "sameAs": null,
+        "description": null
+    },
+    "headline": "Crear formulario de contacto en Rails 4",
+    "url": "http://localhost:2368/crear-formulario-de-contacto-en-rails-4/",
+    "datePublished": "2015-06-11T04:10:00.000Z",
+    "dateModified": "2015-09-04T02:18:35.246Z",
+    "description": "En este tutorial te voy a enseñar como crear un formulario de contacto en rails, el cual no se guardara en la base de datos. Las gemas que utilizaremos para lograrlos son: mail_form simple_form Instalando las gemas Vamos..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.6">
+    <link rel="alternate" type="application/rss+xml" title="Alejandro Pereira" href="../rss/index.html">
+</head>
+<body class="post-template" no-cover>
+
+	<header class="main-header">
+    <div class="logo">
+    <a href="../"><img class="round-img" src="../content/images/2015/09/profile-img-2.png" alt="Alejandro Pereira"></a>
+      <a class="h3" href="../">Alejandro Pereira <span>Front &amp; Backend developer</span></a>
+    </div>
+    <nav class="main-nav">
+  <a href="index.html#" id="toggle-menu" class="toggle-menu">Menu</a>
+  <ul id="menu">
+        <li class="nav-inicio" role="presentation"><a href="../">Inicio</a></li>
+  </ul>
+</nav>
+
+	</header>
+
+  <div class="container">
+    
+
+  <section class="posts">
+    <article class="post post">
+      <div class="post__meta">
+            <figure class="post__author-img">
+              <img class="round-img" src="http://www.gravatar.com/avatar/776b1f52c07a47c254d36b75c7fceedc?s=250&amp;d=mm&amp;r=x" alt="Alejandro Pereira">
+            </figure>
+          <a class="post__author" href="../author/alejandro/">Alejandro Pereira</a>
+        <time class="post__date" datetime="2015-06-10">10 June 2015</time>
+      </div>
+      <h1>Crear formulario de contacto en Rails 4</h1>
+      <p>En este tutorial te voy a enseñar como crear un formulario de contacto en rails, el cual no se guardara en la base de datos.</p>
+
+<p>Las gemas que utilizaremos para lograrlos son:</p>
+
+<ul>
+<li>mail_form</li>
+<li>simple_form</li>
+</ul>
+
+<h3 id="instalandolasgemas">Instalando las gemas</h3>
+
+<p>Vamos a agregar a nuestro <code>Gemfile</code> lo siguiente:</p>
+
+<pre><code class="language-ruby">gem 'mail_form'  
+gem 'simple_form'  
+</code></pre>
+
+<h3 id="creandoelformulario">Creando el formulario</h3>
+
+<p>Lo primero que haremos es crear las rutas correspondientes en <code>config/routes.rb</code>.</p>
+
+<pre><code class="language-ruby">match '/contacto', to: 'contacts#new', via: 'get'  
+match '/contacto', to: 'contacts#new', via: 'post'  
+</code></pre>
+
+<p>Luego crearemos el controlador para nuestras rutas en <code>app/controllers/contacts_controller.rb</code></p>
+
+<pre><code class="language-ruby">class ContactsController &lt; ApplicationController  
+  def new
+    @contact = Contact.new
+  end
+
+  def create
+    @contact = Contact.new(params[:contact])
+    if @contact.deliver
+      flash[:notice] = 'Gracias por tu mensaje.'
+      redirect_to new_contact_path
+    else
+      flash.now[:error] = 'Ocurrió un error.'
+      render :new
+    end
+  end
+end  
+</code></pre>
+
+<p>Ahora necesitaremos crear nuestro modelo en <code>app/models/contact.rb</code></p>
+
+<pre><code class="language-ruby">class Contact &lt; MailForm::Base  
+  attribute :name, :validate =&gt; true
+  attribute :email
+  attribute :message
+
+  def headers
+    {
+      :subject =&gt; "Formulario de contacto",
+      :to =&gt; "your_email@example.com",
+      :from =&gt; %("#{name}" &lt;#{email}&gt;)
+    }
+  end
+end  
+</code></pre>
+
+<p>Es importante que nuestro modelo herede de <code>MailForm::Base</code>, tambien registramos los atributos que necesitamos en nuestro formulario, con el método <code>attribute :campo_que_necesitamos</code>, y por ultimo tendremos que especificar, el asunto del email, a quien se dirige y quien lo escribe, esto lo hacemos en el método <code>headers</code>.</p>
+
+<p>Por ultimo crearemos la vista de nuestro formulario en <code>app/views/contacts/new.html.erb</code></p>
+
+<pre><code class="language-markup">&lt;h2&gt;Formulario de contacto&lt;/h2&gt;
+
+&lt;%= simple_form_for @contact do |f| %&gt;  
+    &lt;%= f.input :name, :required =&gt; true %&gt;
+    &lt;%= f.input :email, :required =&gt; true %&gt;
+    &lt;%= f.input :message, :as =&gt; :text, :required =&gt; true %&gt;
+    &lt;hr /&gt;
+    &lt;%= f.button :submit, 'Enviar mensaje' %&gt;
+&lt;% end %&gt;  
+</code></pre>
+
+<p>Para finalizar no olvides desplegar tus mensajes de error y éxito.</p>
+
+<pre><code class="language-ruby">&lt;% flash.each do |key, value| %&gt;  
+    &lt;div&gt;
+        &lt;%= value %&gt;
+    &lt;/div&gt;
+&lt;% end %&gt;  
+</code></pre>
+    </article>
+  </section>
+
+  </div>
+
+	<footer class="main-footer">
+		<div class="container">
+			<ul class="social-icons">
+				<!-- <li> -->
+				<!-- 	<a href="#" title="Facebook"> -->
+				<!-- 		<i class="icon-facebook"></i> -->
+				<!-- 	</a> -->
+				<!-- </li> -->
+				<li>
+					<a href="https://twitter.com/alejandropere7" target="_blank" title="Twitter">
+						<i class="icon-twitter"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://gt.linkedin.com/in/alejandropereiragt" target="_blank" title="Linkedin">
+						<i class="icon-linkedin"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://github.com/alejandropereira" target="_blank" title="Github">
+						<i class="icon-github"></i>
+					</a>
+				</li>
+			</ul>
+			<p class="copyright">
+        Copyright © Todos los derechos reservados 2015.
+			</p>
+		</div>
+	</footer>
+
+
+  <script src="../public/jquery.js?v=a84743a149"></script>
+
+  <script type="text/javascript" src="../assets/components/jquery/dist/jquery.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/components/fitvids/jquery.fitvids.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/components/FitText.js/jquery.fittext.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/js/prism.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/js/custom.js?v=a84743a149"></script>
+
+</body>

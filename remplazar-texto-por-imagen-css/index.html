@@ -1,0 +1,150 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Remplazar texto por imagen (CSS)</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/main.css?v=a84743a149">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prism.css?v=a84743a149">
+
+    <link rel="canonical" href="index.html">
+    
+    <meta property="og:site_name" content="Alejandro Pereira">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Remplazar texto por imagen (CSS)">
+    <meta property="og:description" content="Existen varias formas de remplazar texto con una imagen en css: image replacement museum pero la mas común de todas ellas es la siguiente: .hide-text{   text-indent: -9999px; } El problema con este método, es que le estamos indicando al navegador que...">
+    <meta property="og:url" content="http://localhost:2368/remplazar-texto-por-imagen-css/">
+    <meta property="article:published_time" content="2015-05-29T04:17:00.000Z">
+    <meta property="article:modified_time" content="2015-09-04T02:15:28.349Z">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Remplazar texto por imagen (CSS)">
+    <meta name="twitter:description" content="Existen varias formas de remplazar texto con una imagen en css: image replacement museum pero la mas común de todas ellas es la siguiente: .hide-text{   text-indent: -9999px; } El problema con este método, es que le estamos indicando al navegador que...">
+    <meta name="twitter:url" content="http://localhost:2368/remplazar-texto-por-imagen-css/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Alejandro Pereira",
+    "author": {
+        "@type": "Person",
+        "name": "Alejandro Pereira",
+        "image": "//www.gravatar.com/avatar/776b1f52c07a47c254d36b75c7fceedc?s=250&d=mm&r=x",
+        "url": "http://localhost:2368/author/alejandro",
+        "sameAs": null,
+        "description": null
+    },
+    "headline": "Remplazar texto por imagen (CSS)",
+    "url": "http://localhost:2368/remplazar-texto-por-imagen-css/",
+    "datePublished": "2015-05-29T04:17:00.000Z",
+    "dateModified": "2015-09-04T02:15:28.349Z",
+    "description": "Existen varias formas de remplazar texto con una imagen en css: image replacement museum pero la mas común de todas ellas es la siguiente: .hide-text{   text-indent: -9999px; } El problema con este método, es que le estamos indicando al navegador que..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.6">
+    <link rel="alternate" type="application/rss+xml" title="Alejandro Pereira" href="../rss/index.html">
+</head>
+<body class="post-template" no-cover>
+
+	<header class="main-header">
+    <div class="logo">
+    <a href="../"><img class="round-img" src="../content/images/2015/09/profile-img-2.png" alt="Alejandro Pereira"></a>
+      <a class="h3" href="../">Alejandro Pereira <span>Front &amp; Backend developer</span></a>
+    </div>
+    <nav class="main-nav">
+  <a href="index.html#" id="toggle-menu" class="toggle-menu">Menu</a>
+  <ul id="menu">
+        <li class="nav-inicio" role="presentation"><a href="../">Inicio</a></li>
+  </ul>
+</nav>
+
+	</header>
+
+  <div class="container">
+    
+
+  <section class="posts">
+    <article class="post post">
+      <div class="post__meta">
+            <figure class="post__author-img">
+              <img class="round-img" src="http://www.gravatar.com/avatar/776b1f52c07a47c254d36b75c7fceedc?s=250&amp;d=mm&amp;r=x" alt="Alejandro Pereira">
+            </figure>
+          <a class="post__author" href="../author/alejandro/">Alejandro Pereira</a>
+        <time class="post__date" datetime="2015-05-28">28 May 2015</time>
+      </div>
+      <h1>Remplazar texto por imagen (CSS)</h1>
+      <p>Existen varias formas de remplazar texto con una imagen en css: <a href="https://css-tricks.com/examples/ImageReplacement/">image replacement museum</a> pero la mas común de todas ellas es la siguiente:</p>
+
+<pre><code class="language-css">.hide-text{
+  text-indent: -9999px;
+}
+</code></pre>
+
+<p>El problema con este método, es que le estamos indicando al navegador que cree un cuadro vacío de 9999px, el cual nosotros no vemos, pero esta siendo renderizado por el navegador, esto puede resultar en un problema de rendimiento, mas que todo en aparatos no tan recientes eg. (Ipad 1)</p>
+
+<p>El método que utilizo ahora es la siguiente:</p>
+
+<pre><code class="language-css">.hide-text{
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+</code></pre>
+
+<p>Con este método, le estamos indicando la navegador que indente el texto 100%, esto sumado con el <code>overflow: hidden;</code> que oculta todo lo que sobrepase el ancho determinado, termina ocultando el texto y mejoramos el rendimiento, ya que ahora el navegador no tiene que renderizar un cuadro de 9999px. </p>
+
+<p>Si por alguna razon, mas que todo en inputs de tipo submit, vemos que no esta funcionando al 100%, bastara con darle al input un <code>padding:0;</code> para se funcione correctamente, esto pasa porque el navegador le agrega padding por defecto.</p>
+    </article>
+  </section>
+
+  </div>
+
+	<footer class="main-footer">
+		<div class="container">
+			<ul class="social-icons">
+				<!-- <li> -->
+				<!-- 	<a href="#" title="Facebook"> -->
+				<!-- 		<i class="icon-facebook"></i> -->
+				<!-- 	</a> -->
+				<!-- </li> -->
+				<li>
+					<a href="https://twitter.com/alejandropere7" target="_blank" title="Twitter">
+						<i class="icon-twitter"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://gt.linkedin.com/in/alejandropereiragt" target="_blank" title="Linkedin">
+						<i class="icon-linkedin"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://github.com/alejandropereira" target="_blank" title="Github">
+						<i class="icon-github"></i>
+					</a>
+				</li>
+			</ul>
+			<p class="copyright">
+        Copyright © Todos los derechos reservados 2015.
+			</p>
+		</div>
+	</footer>
+
+
+  <script src="../public/jquery.js?v=a84743a149"></script>
+
+  <script type="text/javascript" src="../assets/components/jquery/dist/jquery.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/components/fitvids/jquery.fitvids.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/components/FitText.js/jquery.fittext.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/js/prism.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/js/custom.js?v=a84743a149"></script>
+
+</body>

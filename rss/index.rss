@@ -1,0 +1,268 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0"><channel><title>Alejandro Pereira</title><description>Thoughts, stories and ideas.</description><link>http://localhost:2368/</link><generator>Ghost 0.6</generator><lastBuildDate>Fri, 04 Sep 2015 02:53:33 GMT</lastBuildDate><atom:link href="http://localhost:2368/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Encontrado todos los archivos que contienen cierto texto en Unix</title><description>&lt;p&gt;Hay veces que necesitamos encontrar todos los archivos de cierto directorio que contengan cierta palabra, por ejemplo &lt;code&gt;Archives&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;En la consola, Linux/Unix podemos realizarlo con el comando &lt;code&gt;grep&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Por ejemplo si queremos buscar en directorio &lt;code&gt;posts&lt;/code&gt; todos los archivos que contengan la palabra &lt;code&gt;Archives&lt;/code&gt;, lo podemos hacer de la&lt;/p&gt;</description><link>http://localhost:2368/encontrado-todos-los-archivos-que-contienen-cierto-texto-en-unix/</link><guid isPermaLink="false">c5540633-89ea-4afc-9d56-cfa1e339cc96</guid><dc:creator>Alejandro Pereira</dc:creator><pubDate>Wed, 24 Jun 2015 02:25:00 GMT</pubDate><content:encoded>&lt;p&gt;Hay veces que necesitamos encontrar todos los archivos de cierto directorio que contengan cierta palabra, por ejemplo &lt;code&gt;Archives&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;En la consola, Linux/Unix podemos realizarlo con el comando &lt;code&gt;grep&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Por ejemplo si queremos buscar en directorio &lt;code&gt;posts&lt;/code&gt; todos los archivos que contengan la palabra &lt;code&gt;Archives&lt;/code&gt;, lo podemos hacer de la siguiente forma.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-bash"&gt;grep -rnw 'posts' -e 'Archives'  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;-r&lt;/code&gt; ó &lt;code&gt;-R&lt;/code&gt; le indica al comando &lt;code&gt;grep&lt;/code&gt; que haga la búsqueda de forma recursiva, es decir que busque tambien en subdirectorios.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-n&lt;/code&gt; indica que muestre el numero de linea en el archivo.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-w&lt;/code&gt; indica que busque la palabra literalmente.&lt;/p&gt;
+
+&lt;p&gt;Tambien podemos agregar &lt;code&gt;--include&lt;/code&gt; ó &lt;code&gt;--exclude&lt;/code&gt; para hacer la búsqueda mas efectiva.&lt;/p&gt;
+
+&lt;p&gt;Por ejemplo indicar que solo incluya archivos html.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-bash"&gt;grep --include=*.html -rnw 'posts' -e 'Archives'  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ó que excluya de la búsqueda los archivos php.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-bash"&gt;grep --exclude=*.php -rnw 'posts' -e 'Archives'  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="explainshell"&gt;ExplainShell&lt;/h3&gt;
+
+&lt;p&gt;Y si estas aprendiendo a utilizar la terminal te recomiendo esta página &lt;a href="http://explainshell.com/"&gt;ExplainShell&lt;/a&gt;, no te enseña a usarla, pero insertas un comando y te explica a detalle que esta pasando.&lt;/p&gt;</content:encoded></item><item><title>Rails 4: Active Record enums</title><description>&lt;p&gt;En Rails hay veces que nuestro modelo usualmente tiene una columna que sera utilizada con valores predefinidos, por ejemplo el estado de un articulo. Y terminamos teniendo un modelo definido de la siguiente manera.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;class Article &amp;lt; ActiveRecord::Base  
+  STATUS = %w(borrador publicado)
+
+  def borrador?
+    status == 'borrador'
+  end
+
+  def publicado?&lt;/code&gt;&lt;/pre&gt;</description><link>http://localhost:2368/rails-4-active-record-enums/</link><guid isPermaLink="false">d5ca474c-ef50-40e2-97b0-7b4a8bf92631</guid><dc:creator>Alejandro Pereira</dc:creator><pubDate>Wed, 17 Jun 2015 00:46:00 GMT</pubDate><content:encoded>&lt;p&gt;En Rails hay veces que nuestro modelo usualmente tiene una columna que sera utilizada con valores predefinidos, por ejemplo el estado de un articulo. Y terminamos teniendo un modelo definido de la siguiente manera.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;class Article &amp;lt; ActiveRecord::Base  
+  STATUS = %w(borrador publicado)
+
+  def borrador?
+    status == 'borrador'
+  end
+
+  def publicado?
+    status == 'publicado'
+  end
+end  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;En Rails 4.1.0, el equipo que mantiene Rails, implemento un nuevo feature &lt;code&gt;ActiveRecord::Enum&lt;/code&gt;, que nos permite escribir código limpio, quedaría de la siguiente forma.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;class Article &amp;lt; ActiveRecord::Base  
+  enum status: %w(borrador publicado)
+end  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Con esta única linea de código, Rails genera algunos métodos de ayuda para nosotros.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;#Métodos para hacer queries
+articulo.borrador?  
+articulo.publicado?
+
+#Métodos para cambiar el estado
+articulo.borrador!  
+articulo.publicado!
+
+#Listado de estados
+Articulo.statuses  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;El campo en la base de datos tiene que ser numérico (Integer), Rails se encarga de hacer el trabajo tras bambalinas. Es buena practica darle un valor por defecto de cero, para siempre tener un estado por defecto que en el caso de nuestro ejemplo seria &lt;code&gt;borrador&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;create_table :articles do |t|  
+  t.column :status, :integer, default: 0
+end  
+&lt;/code&gt;&lt;/pre&gt;</content:encoded></item><item><title>Crear formulario de contacto en Rails 4</title><description>&lt;p&gt;En este tutorial te voy a enseñar como crear un formulario de contacto en rails, el cual no se guardara en la base de datos.&lt;/p&gt;
+
+&lt;p&gt;Las gemas que utilizaremos para lograrlos son:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;mail_form&lt;/li&gt;
+&lt;li&gt;simple_form&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="instalandolasgemas"&gt;Instalando las gemas&lt;/h3&gt;
+
+&lt;p&gt;Vamos a agregar a nuestro &lt;code&gt;Gemfile&lt;/code&gt; lo siguiente:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;gem 'mail_form'&lt;/code&gt;&lt;/pre&gt;</description><link>http://localhost:2368/crear-formulario-de-contacto-en-rails-4/</link><guid isPermaLink="false">806b8d2e-496e-4d8f-bbe4-1dcb8fc0c07a</guid><dc:creator>Alejandro Pereira</dc:creator><pubDate>Thu, 11 Jun 2015 04:10:00 GMT</pubDate><content:encoded>&lt;p&gt;En este tutorial te voy a enseñar como crear un formulario de contacto en rails, el cual no se guardara en la base de datos.&lt;/p&gt;
+
+&lt;p&gt;Las gemas que utilizaremos para lograrlos son:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;mail_form&lt;/li&gt;
+&lt;li&gt;simple_form&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="instalandolasgemas"&gt;Instalando las gemas&lt;/h3&gt;
+
+&lt;p&gt;Vamos a agregar a nuestro &lt;code&gt;Gemfile&lt;/code&gt; lo siguiente:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;gem 'mail_form'  
+gem 'simple_form'  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="creandoelformulario"&gt;Creando el formulario&lt;/h3&gt;
+
+&lt;p&gt;Lo primero que haremos es crear las rutas correspondientes en &lt;code&gt;config/routes.rb&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;match '/contacto', to: 'contacts#new', via: 'get'  
+match '/contacto', to: 'contacts#new', via: 'post'  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Luego crearemos el controlador para nuestras rutas en &lt;code&gt;app/controllers/contacts_controller.rb&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;class ContactsController &amp;lt; ApplicationController  
+  def new
+    @contact = Contact.new
+  end
+
+  def create
+    @contact = Contact.new(params[:contact])
+    if @contact.deliver
+      flash[:notice] = 'Gracias por tu mensaje.'
+      redirect_to new_contact_path
+    else
+      flash.now[:error] = 'Ocurrió un error.'
+      render :new
+    end
+  end
+end  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ahora necesitaremos crear nuestro modelo en &lt;code&gt;app/models/contact.rb&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;class Contact &amp;lt; MailForm::Base  
+  attribute :name, :validate =&amp;gt; true
+  attribute :email
+  attribute :message
+
+  def headers
+    {
+      :subject =&amp;gt; "Formulario de contacto",
+      :to =&amp;gt; "your_email@example.com",
+      :from =&amp;gt; %("#{name}" &amp;lt;#{email}&amp;gt;)
+    }
+  end
+end  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Es importante que nuestro modelo herede de &lt;code&gt;MailForm::Base&lt;/code&gt;, tambien registramos los atributos que necesitamos en nuestro formulario, con el método &lt;code&gt;attribute :campo_que_necesitamos&lt;/code&gt;, y por ultimo tendremos que especificar, el asunto del email, a quien se dirige y quien lo escribe, esto lo hacemos en el método &lt;code&gt;headers&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Por ultimo crearemos la vista de nuestro formulario en &lt;code&gt;app/views/contacts/new.html.erb&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-markup"&gt;&amp;lt;h2&amp;gt;Formulario de contacto&amp;lt;/h2&amp;gt;
+
+&amp;lt;%= simple_form_for @contact do |f| %&amp;gt;  
+    &amp;lt;%= f.input :name, :required =&amp;gt; true %&amp;gt;
+    &amp;lt;%= f.input :email, :required =&amp;gt; true %&amp;gt;
+    &amp;lt;%= f.input :message, :as =&amp;gt; :text, :required =&amp;gt; true %&amp;gt;
+    &amp;lt;hr /&amp;gt;
+    &amp;lt;%= f.button :submit, 'Enviar mensaje' %&amp;gt;
+&amp;lt;% end %&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Para finalizar no olvides desplegar tus mensajes de error y éxito.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;&amp;lt;% flash.each do |key, value| %&amp;gt;  
+    &amp;lt;div&amp;gt;
+        &amp;lt;%= value %&amp;gt;
+    &amp;lt;/div&amp;gt;
+&amp;lt;% end %&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;</content:encoded></item><item><title>Git Stash</title><description>&lt;p&gt;Estas trabajando en un nuevo feature, modificando archivos, entonces te dicen que tienes que arreglar un bug que se encuentra en otro branch, no puedes solo &lt;code&gt;git checkout other-brach&lt;/code&gt; porque perderías todos los cambios que has realizado.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;git stash&lt;/code&gt; al rescate, pero ¿Qué hace git stash?&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Guarda todos los cambios&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description><link>http://localhost:2368/git-stash/</link><guid isPermaLink="false">9ac5bb4c-fb4c-418b-908e-fdf6719299bc</guid><dc:creator>Alejandro Pereira</dc:creator><pubDate>Sat, 06 Jun 2015 02:17:00 GMT</pubDate><content:encoded>&lt;p&gt;Estas trabajando en un nuevo feature, modificando archivos, entonces te dicen que tienes que arreglar un bug que se encuentra en otro branch, no puedes solo &lt;code&gt;git checkout other-brach&lt;/code&gt; porque perderías todos los cambios que has realizado.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;git stash&lt;/code&gt; al rescate, pero ¿Qué hace git stash?&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Guarda todos los cambios que has realizado, sin tener que hacer un commit.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Restaura tu directorio de trabajo, al último commit realizado.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Entonces ahora ya podemos trabajar en otros branches, hacer commits sin perder nuestro trabajo, pero ¿Como regresamos al estado en donde nos encontrábamos antes? solo tienes que ejecutar el comando &lt;code&gt;git stash pop&lt;/code&gt;, en el branch que dejaste los cambios pendientes y listo, estamos de regreso.&lt;/p&gt;</content:encoded></item><item><title>Diferencia entre un symlink y un hardlink en Unix</title><description>&lt;p&gt;Si estas empezando en el mundo de la terminal, ¿te has preguntado cual es la diferencia entre un symlink y un hardlink en Unix?&lt;/p&gt;
+
+&lt;p&gt;Entender la diferencia es importante, si te estas adentrando en el mundo de la consola y empezando a comprender como funcionan los sistemas Linux/Unix.&lt;/p&gt;
+
+&lt;h3 id="quesunlinksimblicosymlink"&gt;¿Qué&lt;/h3&gt;</description><link>http://localhost:2368/diferencia-entre-un-symlink-y-un-hardlink-en-unix/</link><guid isPermaLink="false">969596c5-62a9-4ac8-93ad-32f0f224c370</guid><dc:creator>Alejandro Pereira</dc:creator><pubDate>Tue, 02 Jun 2015 16:23:00 GMT</pubDate><content:encoded>&lt;p&gt;Si estas empezando en el mundo de la terminal, ¿te has preguntado cual es la diferencia entre un symlink y un hardlink en Unix?&lt;/p&gt;
+
+&lt;p&gt;Entender la diferencia es importante, si te estas adentrando en el mundo de la consola y empezando a comprender como funcionan los sistemas Linux/Unix.&lt;/p&gt;
+
+&lt;h3 id="quesunlinksimblicosymlink"&gt;¿Qué es un link simbólico ó symlink?&lt;/h3&gt;
+
+&lt;p&gt;Un symlink es bastante similar a lo que vendría siento un shortcut en windows. Por lo regular contiene información del archivo de destino. Claro en Linux/Unix tambien podemos tener shortcuts, pero la comparación con un shortcut de windows nos ayudara a entender mejor que son.&lt;/p&gt;
+
+&lt;h3 id="quesunhardlink"&gt;¿Qué es un hard link?&lt;/h3&gt;
+
+&lt;p&gt;Hard link es un poco diferente a un symlink. Un hardlink es un puntero o referencia a un archivo. Lo importante con los Hardlinks es que están muy relacionados con el archivo al que hacen referencia, es decir si hacemos cambios a un Hardlink, estos cambios tambien se verán reflejados en el archivo original. &lt;/p&gt;
+
+&lt;p&gt;Un archivo no es completamente destruido hasta que se eliminan todos los Hardlinks del archivo.&lt;/p&gt;
+
+&lt;h3 id="diferenciasentresymlinksyhardlinks"&gt;Diferencias entre symlinks y hardlinks&lt;/h3&gt;
+
+&lt;p&gt;A continuación hago un listado de las diferencias entre estos dos tipos de links.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Hardlinks no pueden ser creados a partir de un directorio, es decir solo podemos crear hardlinks de archivos.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Un symlink puede hacer referencia a un directorio.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Eliminar el archivo original al que un hardlink hace referencia, no elimina el hardlink, el hardlink aun contiene la información del archivo.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Si eliminas un hardlink ó symlink el archivo original continua intacto.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Eliminar el archivo original de un symlink, no elimina el symlink, pero el symlink es inservible sin el archivo original, lo mismo que sucede con los shortcuts en windows.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="comocrearunsymlink"&gt;¿Como crear un symlink?&lt;/h3&gt;
+
+&lt;p&gt;Si estas en un sistema operativo Linux/Unix se realiza con el siguiente comando.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-html"&gt;ln -s fileA fileB  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="comocrearunhardlink"&gt;¿Como crear un hardlink?&lt;/h3&gt;
+
+&lt;p&gt;Si estas en un sistema operativo Linux/Unix se realiza con el siguiente comando.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-html"&gt;ln fileA fileB  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="explainshell"&gt;ExplainShell&lt;/h3&gt;
+
+&lt;p&gt;Y si estas aprendiendo a utilizar la terminal te recomiendo esta página &lt;a href="http://explainshell.com/"&gt;ExplainShell&lt;/a&gt;, no te enseña a usarla, pero insertas un comando y te explica a detalle que esta pasando.&lt;/p&gt;</content:encoded></item><item><title>Remplazar texto por imagen (CSS)</title><description>&lt;p&gt;Existen varias formas de remplazar texto con una imagen en css: &lt;a href="https://css-tricks.com/examples/ImageReplacement/"&gt;image replacement museum&lt;/a&gt; pero la mas común de todas ellas es la siguiente:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-css"&gt;.hide-text{
+  text-indent: -9999px;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;El problema con este método, es que le estamos indicando al navegador que cree un cuadro vacío de 9999px, el cual nosotros no&lt;/p&gt;</description><link>http://localhost:2368/remplazar-texto-por-imagen-css/</link><guid isPermaLink="false">4ea7ab3a-9ef9-46a8-ae20-4581ad1fa7af</guid><dc:creator>Alejandro Pereira</dc:creator><pubDate>Fri, 29 May 2015 04:17:00 GMT</pubDate><content:encoded>&lt;p&gt;Existen varias formas de remplazar texto con una imagen en css: &lt;a href="https://css-tricks.com/examples/ImageReplacement/"&gt;image replacement museum&lt;/a&gt; pero la mas común de todas ellas es la siguiente:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-css"&gt;.hide-text{
+  text-indent: -9999px;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;El problema con este método, es que le estamos indicando al navegador que cree un cuadro vacío de 9999px, el cual nosotros no vemos, pero esta siendo renderizado por el navegador, esto puede resultar en un problema de rendimiento, mas que todo en aparatos no tan recientes eg. (Ipad 1)&lt;/p&gt;
+
+&lt;p&gt;El método que utilizo ahora es la siguiente:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-css"&gt;.hide-text{
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Con este método, le estamos indicando la navegador que indente el texto 100%, esto sumado con el &lt;code&gt;overflow: hidden;&lt;/code&gt; que oculta todo lo que sobrepase el ancho determinado, termina ocultando el texto y mejoramos el rendimiento, ya que ahora el navegador no tiene que renderizar un cuadro de 9999px. &lt;/p&gt;
+
+&lt;p&gt;Si por alguna razon, mas que todo en inputs de tipo submit, vemos que no esta funcionando al 100%, bastara con darle al input un &lt;code&gt;padding:0;&lt;/code&gt; para se funcione correctamente, esto pasa porque el navegador le agrega padding por defecto.&lt;/p&gt;</content:encoded></item></channel></rss>

@@ -1,0 +1,171 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Rails 4: Active Record enums</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/main.css?v=a84743a149">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prism.css?v=a84743a149">
+
+    <link rel="canonical" href="index.html">
+    
+    <meta property="og:site_name" content="Alejandro Pereira">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Rails 4: Active Record enums">
+    <meta property="og:description" content="En Rails hay veces que nuestro modelo usualmente tiene una columna que sera utilizada con valores predefinidos, por ejemplo el estado de un articulo. Y terminamos teniendo un modelo definido de la siguiente manera. class Article &amp;lt; ActiveRecord::Base     STATUS...">
+    <meta property="og:url" content="http://localhost:2368/rails-4-active-record-enums/">
+    <meta property="article:published_time" content="2015-06-17T00:46:00.000Z">
+    <meta property="article:modified_time" content="2015-09-04T02:37:18.844Z">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Rails 4: Active Record enums">
+    <meta name="twitter:description" content="En Rails hay veces que nuestro modelo usualmente tiene una columna que sera utilizada con valores predefinidos, por ejemplo el estado de un articulo. Y terminamos teniendo un modelo definido de la siguiente manera. class Article &amp;lt; ActiveRecord::Base     STATUS...">
+    <meta name="twitter:url" content="http://localhost:2368/rails-4-active-record-enums/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Alejandro Pereira",
+    "author": {
+        "@type": "Person",
+        "name": "Alejandro Pereira",
+        "image": "//www.gravatar.com/avatar/776b1f52c07a47c254d36b75c7fceedc?s=250&d=mm&r=x",
+        "url": "http://localhost:2368/author/alejandro",
+        "sameAs": null,
+        "description": null
+    },
+    "headline": "Rails 4: Active Record enums",
+    "url": "http://localhost:2368/rails-4-active-record-enums/",
+    "datePublished": "2015-06-17T00:46:00.000Z",
+    "dateModified": "2015-09-04T02:37:18.844Z",
+    "description": "En Rails hay veces que nuestro modelo usualmente tiene una columna que sera utilizada con valores predefinidos, por ejemplo el estado de un articulo. Y terminamos teniendo un modelo definido de la siguiente manera. class Article &amp;lt; ActiveRecord::Base     STATUS..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.6">
+    <link rel="alternate" type="application/rss+xml" title="Alejandro Pereira" href="../rss/index.html">
+</head>
+<body class="post-template" no-cover>
+
+	<header class="main-header">
+    <div class="logo">
+    <a href="../"><img class="round-img" src="../content/images/2015/09/profile-img-2.png" alt="Alejandro Pereira"></a>
+      <a class="h3" href="../">Alejandro Pereira <span>Front &amp; Backend developer</span></a>
+    </div>
+    <nav class="main-nav">
+  <a href="index.html#" id="toggle-menu" class="toggle-menu">Menu</a>
+  <ul id="menu">
+        <li class="nav-inicio" role="presentation"><a href="../">Inicio</a></li>
+  </ul>
+</nav>
+
+	</header>
+
+  <div class="container">
+    
+
+  <section class="posts">
+    <article class="post post">
+      <div class="post__meta">
+            <figure class="post__author-img">
+              <img class="round-img" src="http://www.gravatar.com/avatar/776b1f52c07a47c254d36b75c7fceedc?s=250&amp;d=mm&amp;r=x" alt="Alejandro Pereira">
+            </figure>
+          <a class="post__author" href="../author/alejandro/">Alejandro Pereira</a>
+        <time class="post__date" datetime="2015-06-16">16 June 2015</time>
+      </div>
+      <h1>Rails 4: Active Record enums</h1>
+      <p>En Rails hay veces que nuestro modelo usualmente tiene una columna que sera utilizada con valores predefinidos, por ejemplo el estado de un articulo. Y terminamos teniendo un modelo definido de la siguiente manera.</p>
+
+<pre><code class="language-ruby">class Article &lt; ActiveRecord::Base  
+  STATUS = %w(borrador publicado)
+
+  def borrador?
+    status == 'borrador'
+  end
+
+  def publicado?
+    status == 'publicado'
+  end
+end  
+</code></pre>
+
+<p>En Rails 4.1.0, el equipo que mantiene Rails, implemento un nuevo feature <code>ActiveRecord::Enum</code>, que nos permite escribir código limpio, quedaría de la siguiente forma.</p>
+
+<pre><code class="language-ruby">class Article &lt; ActiveRecord::Base  
+  enum status: %w(borrador publicado)
+end  
+</code></pre>
+
+<p>Con esta única linea de código, Rails genera algunos métodos de ayuda para nosotros.</p>
+
+<pre><code class="language-ruby">#Métodos para hacer queries
+articulo.borrador?  
+articulo.publicado?
+
+#Métodos para cambiar el estado
+articulo.borrador!  
+articulo.publicado!
+
+#Listado de estados
+Articulo.statuses  
+</code></pre>
+
+<p>El campo en la base de datos tiene que ser numérico (Integer), Rails se encarga de hacer el trabajo tras bambalinas. Es buena practica darle un valor por defecto de cero, para siempre tener un estado por defecto que en el caso de nuestro ejemplo seria <code>borrador</code>.</p>
+
+<pre><code class="language-ruby">create_table :articles do |t|  
+  t.column :status, :integer, default: 0
+end  
+</code></pre>
+    </article>
+  </section>
+
+  </div>
+
+	<footer class="main-footer">
+		<div class="container">
+			<ul class="social-icons">
+				<!-- <li> -->
+				<!-- 	<a href="#" title="Facebook"> -->
+				<!-- 		<i class="icon-facebook"></i> -->
+				<!-- 	</a> -->
+				<!-- </li> -->
+				<li>
+					<a href="https://twitter.com/alejandropere7" target="_blank" title="Twitter">
+						<i class="icon-twitter"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://gt.linkedin.com/in/alejandropereiragt" target="_blank" title="Linkedin">
+						<i class="icon-linkedin"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://github.com/alejandropereira" target="_blank" title="Github">
+						<i class="icon-github"></i>
+					</a>
+				</li>
+			</ul>
+			<p class="copyright">
+        Copyright © Todos los derechos reservados 2015.
+			</p>
+		</div>
+	</footer>
+
+
+  <script src="../public/jquery.js?v=a84743a149"></script>
+
+  <script type="text/javascript" src="../assets/components/jquery/dist/jquery.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/components/fitvids/jquery.fitvids.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/components/FitText.js/jquery.fittext.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/js/prism.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/js/custom.js?v=a84743a149"></script>
+
+</body>

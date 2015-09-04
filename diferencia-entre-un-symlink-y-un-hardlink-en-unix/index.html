@@ -1,0 +1,172 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Diferencia entre un symlink y un hardlink en Unix</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/main.css?v=a84743a149">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prism.css?v=a84743a149">
+
+    <link rel="canonical" href="index.html">
+    
+    <meta property="og:site_name" content="Alejandro Pereira">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Diferencia entre un symlink y un hardlink en Unix">
+    <meta property="og:description" content="Si estas empezando en el mundo de la terminal, ¿te has preguntado cual es la diferencia entre un symlink y un hardlink en Unix? Entender la diferencia es importante, si te estas adentrando en el mundo de la consola y...">
+    <meta property="og:url" content="http://localhost:2368/diferencia-entre-un-symlink-y-un-hardlink-en-unix/">
+    <meta property="article:published_time" content="2015-06-02T16:23:00.000Z">
+    <meta property="article:modified_time" content="2015-09-04T02:16:58.486Z">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Diferencia entre un symlink y un hardlink en Unix">
+    <meta name="twitter:description" content="Si estas empezando en el mundo de la terminal, ¿te has preguntado cual es la diferencia entre un symlink y un hardlink en Unix? Entender la diferencia es importante, si te estas adentrando en el mundo de la consola y...">
+    <meta name="twitter:url" content="http://localhost:2368/diferencia-entre-un-symlink-y-un-hardlink-en-unix/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Alejandro Pereira",
+    "author": {
+        "@type": "Person",
+        "name": "Alejandro Pereira",
+        "image": "//www.gravatar.com/avatar/776b1f52c07a47c254d36b75c7fceedc?s=250&d=mm&r=x",
+        "url": "http://localhost:2368/author/alejandro",
+        "sameAs": null,
+        "description": null
+    },
+    "headline": "Diferencia entre un symlink y un hardlink en Unix",
+    "url": "http://localhost:2368/diferencia-entre-un-symlink-y-un-hardlink-en-unix/",
+    "datePublished": "2015-06-02T16:23:00.000Z",
+    "dateModified": "2015-09-04T02:16:58.486Z",
+    "description": "Si estas empezando en el mundo de la terminal, ¿te has preguntado cual es la diferencia entre un symlink y un hardlink en Unix? Entender la diferencia es importante, si te estas adentrando en el mundo de la consola y..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.6">
+    <link rel="alternate" type="application/rss+xml" title="Alejandro Pereira" href="../rss/index.html">
+</head>
+<body class="post-template" no-cover>
+
+	<header class="main-header">
+    <div class="logo">
+    <a href="../"><img class="round-img" src="../content/images/2015/09/profile-img-2.png" alt="Alejandro Pereira"></a>
+      <a class="h3" href="../">Alejandro Pereira <span>Front &amp; Backend developer</span></a>
+    </div>
+    <nav class="main-nav">
+  <a href="index.html#" id="toggle-menu" class="toggle-menu">Menu</a>
+  <ul id="menu">
+        <li class="nav-inicio" role="presentation"><a href="../">Inicio</a></li>
+  </ul>
+</nav>
+
+	</header>
+
+  <div class="container">
+    
+
+  <section class="posts">
+    <article class="post post">
+      <div class="post__meta">
+            <figure class="post__author-img">
+              <img class="round-img" src="http://www.gravatar.com/avatar/776b1f52c07a47c254d36b75c7fceedc?s=250&amp;d=mm&amp;r=x" alt="Alejandro Pereira">
+            </figure>
+          <a class="post__author" href="../author/alejandro/">Alejandro Pereira</a>
+        <time class="post__date" datetime="2015-06-02">02 June 2015</time>
+      </div>
+      <h1>Diferencia entre un symlink y un hardlink en Unix</h1>
+      <p>Si estas empezando en el mundo de la terminal, ¿te has preguntado cual es la diferencia entre un symlink y un hardlink en Unix?</p>
+
+<p>Entender la diferencia es importante, si te estas adentrando en el mundo de la consola y empezando a comprender como funcionan los sistemas Linux/Unix.</p>
+
+<h3 id="quesunlinksimblicosymlink">¿Qué es un link simbólico ó symlink?</h3>
+
+<p>Un symlink es bastante similar a lo que vendría siento un shortcut en windows. Por lo regular contiene información del archivo de destino. Claro en Linux/Unix tambien podemos tener shortcuts, pero la comparación con un shortcut de windows nos ayudara a entender mejor que son.</p>
+
+<h3 id="quesunhardlink">¿Qué es un hard link?</h3>
+
+<p>Hard link es un poco diferente a un symlink. Un hardlink es un puntero o referencia a un archivo. Lo importante con los Hardlinks es que están muy relacionados con el archivo al que hacen referencia, es decir si hacemos cambios a un Hardlink, estos cambios tambien se verán reflejados en el archivo original. </p>
+
+<p>Un archivo no es completamente destruido hasta que se eliminan todos los Hardlinks del archivo.</p>
+
+<h3 id="diferenciasentresymlinksyhardlinks">Diferencias entre symlinks y hardlinks</h3>
+
+<p>A continuación hago un listado de las diferencias entre estos dos tipos de links.</p>
+
+<ul>
+<li><p>Hardlinks no pueden ser creados a partir de un directorio, es decir solo podemos crear hardlinks de archivos.</p></li>
+<li><p>Un symlink puede hacer referencia a un directorio.</p></li>
+<li><p>Eliminar el archivo original al que un hardlink hace referencia, no elimina el hardlink, el hardlink aun contiene la información del archivo.</p></li>
+<li><p>Si eliminas un hardlink ó symlink el archivo original continua intacto.</p></li>
+<li><p>Eliminar el archivo original de un symlink, no elimina el symlink, pero el symlink es inservible sin el archivo original, lo mismo que sucede con los shortcuts en windows.</p></li>
+</ul>
+
+<h3 id="comocrearunsymlink">¿Como crear un symlink?</h3>
+
+<p>Si estas en un sistema operativo Linux/Unix se realiza con el siguiente comando.</p>
+
+<pre><code class="language-html">ln -s fileA fileB  
+</code></pre>
+
+<h3 id="comocrearunhardlink">¿Como crear un hardlink?</h3>
+
+<p>Si estas en un sistema operativo Linux/Unix se realiza con el siguiente comando.</p>
+
+<pre><code class="language-html">ln fileA fileB  
+</code></pre>
+
+<h3 id="explainshell">ExplainShell</h3>
+
+<p>Y si estas aprendiendo a utilizar la terminal te recomiendo esta página <a href="http://explainshell.com/">ExplainShell</a>, no te enseña a usarla, pero insertas un comando y te explica a detalle que esta pasando.</p>
+    </article>
+  </section>
+
+  </div>
+
+	<footer class="main-footer">
+		<div class="container">
+			<ul class="social-icons">
+				<!-- <li> -->
+				<!-- 	<a href="#" title="Facebook"> -->
+				<!-- 		<i class="icon-facebook"></i> -->
+				<!-- 	</a> -->
+				<!-- </li> -->
+				<li>
+					<a href="https://twitter.com/alejandropere7" target="_blank" title="Twitter">
+						<i class="icon-twitter"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://gt.linkedin.com/in/alejandropereiragt" target="_blank" title="Linkedin">
+						<i class="icon-linkedin"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://github.com/alejandropereira" target="_blank" title="Github">
+						<i class="icon-github"></i>
+					</a>
+				</li>
+			</ul>
+			<p class="copyright">
+        Copyright © Todos los derechos reservados 2015.
+			</p>
+		</div>
+	</footer>
+
+
+  <script src="../public/jquery.js?v=a84743a149"></script>
+
+  <script type="text/javascript" src="../assets/components/jquery/dist/jquery.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/components/fitvids/jquery.fitvids.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/components/FitText.js/jquery.fittext.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/js/prism.js?v=a84743a149"></script>
+  <script type="text/javascript" src="../assets/js/custom.js?v=a84743a149"></script>
+
+</body>
