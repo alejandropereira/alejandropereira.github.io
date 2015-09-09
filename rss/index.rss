@@ -1,4 +1,37 @@
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0"><channel><title>Alejandro Pereira</title><description>Thoughts, stories and ideas.</description><link>http://localhost:2368/</link><generator>Ghost 0.6</generator><lastBuildDate>Fri, 04 Sep 2015 16:44:24 GMT</lastBuildDate><atom:link href="http://localhost:2368/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Usando Bower para manejar dependencias frontend en Rails</title><description>&lt;p&gt;Si no sabes que es Bower, es un poderoso gestor de componentes frontend creado por los tíos de Twitter. Pero te preguntaras ¿Para que usar Bower en Rails, si tenemos el &lt;code&gt;Gemfile&lt;/code&gt; para instalar gemas.&lt;/p&gt;
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0"><channel><title>Alejandro Pereira</title><description>Thoughts, stories and ideas.</description><link>http://localhost:2368/</link><generator>Ghost 0.6</generator><lastBuildDate>Wed, 09 Sep 2015 22:32:08 GMT</lastBuildDate><atom:link href="http://localhost:2368/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Como configurar BrowserSync con Rails</title><description>&lt;p&gt;&lt;a href="http://www.browsersync.io/"&gt;BrowserSync&lt;/a&gt; es un excelente herramienta a la hora de realizar desarrollo frontend, ya que nos permite poder realizar pruebas en distintos dispositivos, y refresca el navegador luego de editar y salvar los archivos que se le indiquen, por ejemplo los archivos html, css, js, etc...&lt;/p&gt;
+
+&lt;p&gt;En este post te voy&lt;/p&gt;</description><link>http://localhost:2368/como-configurar-browsersync-con-rails/</link><guid isPermaLink="false">7a04b6c3-f650-4ee9-ac57-6ee311ad408f</guid><dc:creator>Alejandro Pereira</dc:creator><pubDate>Wed, 22 Jul 2015 21:43:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;a href="http://www.browsersync.io/"&gt;BrowserSync&lt;/a&gt; es un excelente herramienta a la hora de realizar desarrollo frontend, ya que nos permite poder realizar pruebas en distintos dispositivos, y refresca el navegador luego de editar y salvar los archivos que se le indiquen, por ejemplo los archivos html, css, js, etc...&lt;/p&gt;
+
+&lt;p&gt;En este post te voy a enseñar como utilizar BrowserSync con Rails, lo cual es muy sencillo.&lt;/p&gt;
+
+&lt;p&gt;Lo primero que necesitamos tener instalado es Nodejs y BrowserSync, para ello instalaremos Nodejs, descargando el instalador en la &lt;a href="https://nodejs.org"&gt;página oficial&lt;/a&gt;, tambien podemos instalarlo vía &lt;a href="http://brew.sh/"&gt;Homebrew&lt;/a&gt; si nos encontramos en un computador Mac &lt;code&gt;brew install node&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Luego necesitaremos instalar BrowserSync, lo haremos a travez de NPM, el gestor de paquetes de Nodejs &lt;code&gt;npm install -g browser-sync&lt;/code&gt;, lo instalaremos de forma global &lt;code&gt;-g&lt;/code&gt; para poder utilizarlo en cualquier proyecto que necesitemos.&lt;/p&gt;
+
+&lt;p&gt;Lo siguiente será iniciar el servidor de rails &lt;code&gt;rails s&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Y indicarle a BrowserSync, que utilice como proxy, la URL que nos sirve para ver nuestro proyecto de rails en el navegador que por lo general es &lt;code&gt;localhost:3000&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Iniciamos BrowserSync&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-bash"&gt;browser-sync start --proxy localhost:3000 --files "app/assets/stylesheets/**/*.scss, app/views/**/*.html.erb"  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;¡Y eso es todo! Veras la siguiente salida de seguimiento en la terminal:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-bash"&gt;[BS] Proxying: http://localhost:3000
+[BS] Access URLs:
+ ----------------------------------
+       Local: http://localhost:3001
+    External: http://10.0.1.3:3001
+ ----------------------------------
+          UI: http://localhost:3002
+ UI External: http://10.0.1.3:3002
+ ----------------------------------
+[BS] Watching files...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ahora podremos revisar nuestro trabajo en diferentes dispositivos por medio de la URL externa &lt;code&gt;http://10.0.1.3:3002&lt;/code&gt;, y nuestro navegador se refrescara automáticamente si realizamos cambios en nuestros archivos SCSS y HTML.&lt;/p&gt;</content:encoded></item><item><title>Usando Bower para manejar dependencias frontend en Rails</title><description>&lt;p&gt;Si no sabes que es Bower, es un poderoso gestor de componentes frontend creado por los tíos de Twitter. Pero te preguntaras ¿Para que usar Bower en Rails, si tenemos el &lt;code&gt;Gemfile&lt;/code&gt; para instalar gemas.&lt;/p&gt;
 
 &lt;p&gt;Bower nos hace la vida mucho mas sencilla a la hora de manejar dependencias frontend,&lt;/p&gt;</description><link>http://localhost:2368/usando-bower-para-manejar-dependencias-frontend-en-rails/</link><guid isPermaLink="false">726bb058-05c4-4260-a9b2-bc9fca218a0f</guid><dc:creator>Alejandro Pereira</dc:creator><pubDate>Wed, 15 Jul 2015 04:04:00 GMT</pubDate><content:encoded>&lt;p&gt;Si no sabes que es Bower, es un poderoso gestor de componentes frontend creado por los tíos de Twitter. Pero te preguntaras ¿Para que usar Bower en Rails, si tenemos el &lt;code&gt;Gemfile&lt;/code&gt; para instalar gemas.&lt;/p&gt;
 
